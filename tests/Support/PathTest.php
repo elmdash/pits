@@ -42,5 +42,4 @@ class PathTest extends \PHPUnit_Framework_TestCase {
         $res = Path::make('some','dir','file.xml');
         $this->assertEquals('some/dir/file.xml', $res);
     }
-    
 }

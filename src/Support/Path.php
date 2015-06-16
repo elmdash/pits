@@ -44,7 +44,7 @@ class Path {
         $dir = Arr::safe($info, 'dirname', '');
         if ($dir) {
             if ($dir == '.') return $info['filename'];
-            return $dir .'/'. $info['filename'];
+            return $dir .DIRECTORY_SEPARATOR. $info['filename'];
         }
         return $info['filename'];
     }
@@ -79,7 +79,7 @@ class Path {
             $fileAndExt = $file . '.' . $ext;
         }
         $parts[] = $fileAndExt;
-        return implode('/', $parts);
+        return implode(DIRECTORY_SEPARATOR, $parts);
     }
 
     /**
@@ -90,12 +90,12 @@ class Path {
      * @return array
      */
     public static function diff($path1, $path2) {
-        $p1 = explode('/', Path::ext($path1) ? Path::dir($path1) : $path1);
-        $p2 = explode('/', Path::ext($path2) ? Path::dir($path2) : $path2);
+        $p1 = explode(DIRECTORY_SEPARATOR, Path::ext($path1) ? Path::dir($path1) : $path1);
+        $p2 = explode(DIRECTORY_SEPARATOR, Path::ext($path2) ? Path::dir($path2) : $path2);
         return array(
-          implode('/', array_intersect_assoc($p1, $p2)),
-          implode('/', array_diff_assoc($p1, $p2)),
-          implode('/', array_diff_assoc($p2, $p1)),
+          implode(DIRECTORY_SEPARATOR, array_intersect_assoc($p1, $p2)),
+          implode(DIRECTORY_SEPARATOR, array_diff_assoc($p1, $p2)),
+          implode(DIRECTORY_SEPARATOR, array_diff_assoc($p2, $p1)),
         );
     }
 

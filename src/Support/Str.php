@@ -2,22 +2,23 @@
 
 namespace Peach\Support;
 
-class Str {
+class Str
+{
 
     protected static $pluralNoChange = [
-        'child',
-        'fish',
-        'deer',
-        'sheep',
-        'bread',
+      'child',
+      'fish',
+      'deer',
+      'sheep',
+      'bread',
     ];
     protected static $pluralIrregular = [
-        'man'     => 'men',
-        'woman'   => 'women',
-        'child'   => 'children',
-        'tooth'   => 'teeth',
-        'person'  => 'people',
-        'mouse'   => 'mice',
+      'man' => 'men',
+      'woman' => 'women',
+      'child' => 'children',
+      'tooth' => 'teeth',
+      'person' => 'people',
+      'mouse' => 'mice',
     ];
 
 
@@ -27,8 +28,11 @@ class Str {
      * @param string $str
      * @return string
      */
-    public static function cCase($str) {
-        return preg_replace_callback('/_([A-Za-z])/', function($matches) { return strtoupper($matches[1]); }, $str);
+    public static function cCase($str)
+    {
+        return preg_replace_callback('/_([A-Za-z])/', function ($matches) {
+            return strtoupper($matches[1]);
+        }, $str);
     }
 
     /**
@@ -37,8 +41,11 @@ class Str {
      * @param string $str
      * @return string
      */
-    public static function uCase($str) {
-        $uCased = preg_replace_callback('/([A-Z])/', function($matches) { return '_'.strtolower($matches[1]); }, $str);
+    public static function uCase($str)
+    {
+        $uCased = preg_replace_callback('/([A-Z])/', function ($matches) {
+            return '_' . strtolower($matches[1]);
+        }, $str);
         return strpos($uCased, '_') === 0 ? substr($uCased, 1) : $uCased;
     }
 
@@ -57,37 +64,53 @@ class Str {
      * @param null|string $pluralStr
      * @return null|string
      */
-    public static function pluralize($count, $singleStr, $pluralStr = NULL) {
-        if ($count == 1) return $singleStr;
-        if ($pluralStr !== NULL) return $pluralStr;
-        if (in_array($singleStr, self::$pluralNoChange)) return $singleStr;
-        if (isset(self::$pluralIrregular[$singleStr])) return self::$pluralIrregular[$singleStr];
+    public static function pluralize($count, $singleStr, $pluralStr = null)
+    {
+        if ($count == 1) {
+            return $singleStr;
+        }
+        if ($pluralStr !== null) {
+            return $pluralStr;
+        }
+        if (in_array($singleStr, self::$pluralNoChange)) {
+            return $singleStr;
+        }
+        if (isset(self::$pluralIrregular[$singleStr])) {
+            return self::$pluralIrregular[$singleStr];
+        }
 
         $lastLetter = substr($singleStr, -1);
         switch ($lastLetter) {
             // sky => skies; library => libraries
-            case 'y': return substr($singleStr, 0, -1) . 'ies';
+            case 'y':
+                return substr($singleStr, 0, -1) . 'ies';
 
             // half => halves; loaf => loaves
-            case 'f': return substr($singleStr, 0, -1) . 'ves';
+            case 'f':
+                return substr($singleStr, 0, -1) . 'ves';
 
             // potato => potatoes; volcano => volcanoes
-            case 'o': return $singleStr . 'es';
+            case 'o':
+                return $singleStr . 'es';
         }
 
         $lastLetters = substr($singleStr, -2);
         switch ($lastLetters) {
             // knife => knives; wife => wives
-            case 'fe': return substr($singleStr, 0, -2) . 'ves';
+            case 'fe':
+                return substr($singleStr, 0, -2) . 'ves';
 
             // cactus => cacti; nucleus => nuclei
-            case 'us': return substr($singleStr, 0, -2) . 'i';
+            case 'us':
+                return substr($singleStr, 0, -2) . 'i';
 
             // analysis => analyses; thesis => theses
-            case 'is': return substr($singleStr, 0, -2) . 'es';
+            case 'is':
+                return substr($singleStr, 0, -2) . 'es';
 
             // phenomenon => phenomena; criterion => criteria
-            case 'on': return substr($singleStr, 0, -2) . 'a';
+            case 'on':
+                return substr($singleStr, 0, -2) . 'a';
         }
         return $singleStr . 's';
     }

@@ -2,7 +2,8 @@
 
 namespace Peach\Support;
 
-class Path {
+class Path
+{
 
     /**
      * 1. Get the extension
@@ -12,7 +13,8 @@ class Path {
      * @param string $newExt
      * @return string
      */
-    public static function ext($path, $newExt = '') {
+    public static function ext($path, $newExt = '')
+    {
         if ($newExt) {
             return self::noExt($path) . '.' . ltrim($newExt, '.');
         }
@@ -23,7 +25,8 @@ class Path {
      * @param string $path
      * @return string mixed
      */
-    public static function dir($path) {
+    public static function dir($path)
+    {
         return pathinfo($path, PATHINFO_DIRNAME);
     }
 
@@ -31,7 +34,8 @@ class Path {
      * @param string $path
      * @return string mixed
      */
-    public static function noDir($path) {
+    public static function noDir($path)
+    {
         return pathinfo($path, PATHINFO_BASENAME);
     }
 
@@ -39,12 +43,15 @@ class Path {
      * @param string $path
      * @return string mixed
      */
-    public static function noExt($path) {
+    public static function noExt($path)
+    {
         $info = pathinfo($path);
         $dir = Arr::safe($info, 'dirname', '');
         if ($dir) {
-            if ($dir == '.') return $info['filename'];
-            return $dir .DIRECTORY_SEPARATOR. $info['filename'];
+            if ($dir == '.') {
+                return $info['filename'];
+            }
+            return $dir . DIRECTORY_SEPARATOR . $info['filename'];
         }
         return $info['filename'];
     }
@@ -58,9 +65,12 @@ class Path {
      * => 'some/dir/file.xml'
      *
      */
-    public static function make() {
+    public static function make()
+    {
         $args = func_get_args();
-        if (!count($args)) return '';
+        if (!count($args)) {
+            return '';
+        }
         $parts = array();
         foreach ($args as $arg) {
             if (is_array($arg)) {
@@ -71,7 +81,7 @@ class Path {
         }
         $fileAndExt = '';
         $ext = array_pop($parts);
-        if (strpos($ext, '.') !== FALSE) {
+        if (strpos($ext, '.') !== false) {
             $fileAndExt = $ext;
         }
         if (!$fileAndExt) {
@@ -89,7 +99,8 @@ class Path {
      * @param string $path2
      * @return array
      */
-    public static function diff($path1, $path2) {
+    public static function diff($path1, $path2)
+    {
         $p1 = explode(DIRECTORY_SEPARATOR, Path::ext($path1) ? Path::dir($path1) : $path1);
         $p2 = explode(DIRECTORY_SEPARATOR, Path::ext($path2) ? Path::dir($path2) : $path2);
         return array(
@@ -103,12 +114,13 @@ class Path {
      * @param $array
      * @return null|string
      */
-    public static function common($array) {
+    public static function common($array)
+    {
         $out = Path::dir(array_shift($array));
-        foreach($array as $path) {
+        foreach ($array as $path) {
             $diff = Path::diff($out, Path::dir($path));
             $out = $diff[0];
-            if(!$out) {
+            if (!$out) {
                 return null;
             }
         }

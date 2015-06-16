@@ -2,7 +2,8 @@
 
 namespace Peach\Support;
 
-class Arr {
+class Arr
+{
 
 
     // MISC  ------------------------------------------------------------------------------------
@@ -15,8 +16,11 @@ class Arr {
      * @param array $overrides
      * @param bool $strict If strict, then only the keys in $defaults will be merged from overrides
      */
-    public static function defaults(array &$defaults, array $overrides = [], $strict = FALSE) {
-        if (!count($overrides)) return;
+    public static function defaults(array &$defaults, array $overrides = [], $strict = false)
+    {
+        if (!count($overrides)) {
+            return;
+        }
         if ($strict) {
             $overrides = static::filterByKeys($overrides, array_keys($defaults));
         }
@@ -28,9 +32,12 @@ class Arr {
      *
      * @param array $array
      */
-    public static function keysUnderscoreToLowerCamelCase(array &$array) {
+    public static function keysUnderscoreToLowerCamelCase(array &$array)
+    {
         $keys = array_keys($array);
-        array_walk($keys, function (&$x) { $x = Str::cCase($x); });
+        array_walk($keys, function (&$x) {
+            $x = Str::cCase($x);
+        });
         $array = array_combine($keys, array_values($array));
     }
 
@@ -41,8 +48,11 @@ class Arr {
      * @param array $array
      * @param callable $func Returns a new key
      */
-    public static function walkKeysRecursive(array &$array, callable $func) {
-        if (!is_callable($func)) return;
+    public static function walkKeysRecursive(array &$array, callable $func)
+    {
+        if (!is_callable($func)) {
+            return;
+        }
         $out = [];
         foreach ($array as $key => $val) {
             $newKey = $func($key);
@@ -72,7 +82,8 @@ class Arr {
      * @param int $limit
      * @return array
      */
-    public static function spliceWhere(array &$array, callable $where, $limit = -1) {
+    public static function spliceWhere(array &$array, callable $where, $limit = -1)
+    {
         $results = [];
         $found = 0;
         foreach ($array as $key => $val) {
@@ -80,7 +91,9 @@ class Arr {
                 break;
             }
             $res = $where($val, $key);
-            if ($res === -1) break;
+            if ($res === -1) {
+                break;
+            }
             if ($res) {
                 $results[$key] = $val;
                 ++$found;
@@ -100,8 +113,11 @@ class Arr {
      * @param callable $where
      * @return int|bool FALSE if $where is not callable, -1 if not found
      */
-    public static function find(array $array, callable $where) {
-        if (!is_callable($where)) return FALSE;
+    public static function find(array $array, callable $where)
+    {
+        if (!is_callable($where)) {
+            return false;
+        }
         foreach ($array as $key => $val) {
             if ($where($key, $val)) {
                 return $val;
@@ -118,8 +134,9 @@ class Arr {
      * @param array $keys
      * @return array
      */
-    public static function filterByKeys(array $array, array $keys) {
-        return array_intersect_key($array, array_fill_keys($keys, NULL));
+    public static function filterByKeys(array $array, array $keys)
+    {
+        return array_intersect_key($array, array_fill_keys($keys, null));
     }
 
     /**
@@ -130,8 +147,9 @@ class Arr {
      * @param array $keys
      * @return array
      */
-    public static function removeByKeys(array $array, array $keys) {
-        return array_diff_key($array, array_fill_keys($keys, NULL));
+    public static function removeByKeys(array $array, array $keys)
+    {
+        return array_diff_key($array, array_fill_keys($keys, null));
     }
 
     /**
@@ -144,8 +162,11 @@ class Arr {
      * @param callable $where
      * @return int|bool FALSE if $where is not callable, -1 if not found
      */
-    public static function findWithKey(array $array, callable $where) {
-        if (!is_callable($where)) return FALSE;
+    public static function findWithKey(array $array, callable $where)
+    {
+        if (!is_callable($where)) {
+            return false;
+        }
         foreach ($array as $key => $val) {
             if ($where($key)) {
                 return $val;
@@ -165,7 +186,8 @@ class Arr {
      * @param array $array
      * @return array Returns a new array
      */
-    public static function shuffleAssoc(array $array) {
+    public static function shuffleAssoc(array $array)
+    {
         $keys = array_keys($array);
         shuffle($keys);
         $new = [];
@@ -183,7 +205,8 @@ class Arr {
      * @param int $count
      * @return array
      */
-    public static function selectRand(array $array, $count = 1) {
+    public static function selectRand(array $array, $count = 1)
+    {
         $keys = array_rand($array, $count);
         if (!is_array($keys)) {
             return $array[$keys];
@@ -203,8 +226,11 @@ class Arr {
      * @param array $array
      * @return int
      */
-    public static function sum(array $array) {
-        return array_reduce($array, function ($c, $v) { return $c += $v; }, 0);
+    public static function sum(array $array)
+    {
+        return array_reduce($array, function ($c, $v) {
+            return $c += $v;
+        }, 0);
     }
 
     /**
@@ -214,12 +240,16 @@ class Arr {
      * @param array $array
      * @return null|mixed
      */
-    public static function maxKey(array $array) {
-        if (empty($array)) return NULL;
+    public static function maxKey(array $array)
+    {
+        if (empty($array)) {
+            return null;
+        }
         $max = max($array);
         $flipped = array_flip($array);
         return $flipped[$max];
     }
+
     /**
      * Returns the key with the lowest value. If there are multiple keys
      * with the lowest value, then the last one is returned.
@@ -227,8 +257,11 @@ class Arr {
      * @param array $array
      * @return null|mixed
      */
-    public static function minKey(array $array) {
-        if (empty($array)) return NULL;
+    public static function minKey(array $array)
+    {
+        if (empty($array)) {
+            return null;
+        }
         $min = min($array);
         $flipped = array_flip($array);
         return $flipped[$min];
@@ -248,8 +281,11 @@ class Arr {
      * @param bool $keysRequired If true, this fails if either array (a or b) does not contain a value for the provided keys
      * @return bool
      */
-    public static function isSameByKeys(array $a, array $b, array $keys, $keysRequired = FALSE) {
-        if ($keysRequired && !(static::hasValuesForKeys($a, $keys) && static::hasValuesForKeys($b, $keys))) return FALSE;
+    public static function isSameByKeys(array $a, array $b, array $keys, $keysRequired = false)
+    {
+        if ($keysRequired && !(static::hasValuesForKeys($a, $keys) && static::hasValuesForKeys($b, $keys))) {
+            return false;
+        }
         return !count(array_diff_assoc(static::filterByKeys($a, $keys), static::filterByKeys($b, $keys)));
     }
 
@@ -263,11 +299,16 @@ class Arr {
      * @param array $keys
      * @return bool
      */
-    public static function hasValuesForKeys(array $target, array $keys) {
+    public static function hasValuesForKeys(array $target, array $keys)
+    {
         $onlyBykeys = static::filterByKeys($target, $keys);
         $onlyByKeysCount = count($onlyBykeys);
-        if ($onlyByKeysCount !== count($keys)) return FALSE;
-        array_walk($onlyBykeys, function(&$k) {$k = trim($k); });
+        if ($onlyByKeysCount !== count($keys)) {
+            return false;
+        }
+        array_walk($onlyBykeys, function (&$k) {
+            $k = trim($k);
+        });
         return $onlyByKeysCount == count(array_filter($onlyBykeys));
     }
 
@@ -282,7 +323,8 @@ class Arr {
      * @param array $beta
      * @return array
      */
-    public static function describeDifferencesByKeys(array $alpha, array $beta) {
+    public static function describeDifferencesByKeys(array $alpha, array $beta)
+    {
         return [
           'both' => array_intersect_key($alpha, $beta),
           'alpha' => array_diff_key($alpha, $beta),
@@ -301,7 +343,8 @@ class Arr {
      * @param array $beta
      * @return array
      */
-    public static function describeDifferences(array $alpha, array $beta) {
+    public static function describeDifferences(array $alpha, array $beta)
+    {
         return [
           'both' => array_intersect($alpha, $beta),
           'alpha' => array_diff($alpha, $beta),
@@ -320,33 +363,38 @@ class Arr {
      * @param array $array
      * @return bool
      */
-    public static function isIndexed(array $array) {
+    public static function isIndexed(array $array)
+    {
         foreach ($array as $key => $val) {
             if (!is_numeric($key)) {
-                return FALSE;
+                return false;
             }
         }
-        return TRUE;
+        return true;
     }
+
     /**
      * Associative if no keys are numeric.
      *
      * @param array $array
      * @return bool
      */
-    public static function isAssoc(array $array) {
+    public static function isAssoc(array $array)
+    {
         foreach ($array as $key => $val) {
             if (is_numeric($key)) {
-                return FALSE;
+                return false;
             }
         }
-        return TRUE;
+        return true;
     }
+
     /**
      * @param array|\Traversable $storage
      * @return bool
      */
-    public static function isTraversable($storage) {
+    public static function isTraversable($storage)
+    {
         return is_array($storage) || $storage instanceof \Traversable;
     }
 
@@ -382,21 +430,28 @@ class Arr {
      * @throws \Exception
      * @return array
      */
-    public static function column(array $rows, $valueColumn = NULL, $keyColumn = NULL) {
-        if ($valueColumn === NULL && $keyColumn === NULL) {
+    public static function column(array $rows, $valueColumn = null, $keyColumn = null)
+    {
+        if ($valueColumn === null && $keyColumn === null) {
             throw new \Exception("You must pass a key or value column to use on the given rows.");
         }
         $newRows = [];
-        if ($keyColumn !== NULL && $valueColumn !== NULL) {
-            foreach ($rows as $row) $newRows[$row[$keyColumn]] = $row[$valueColumn];
+        if ($keyColumn !== null && $valueColumn !== null) {
+            foreach ($rows as $row) {
+                $newRows[$row[$keyColumn]] = $row[$valueColumn];
+            }
             return $newRows;
         }
         if ($valueColumn) {
-            foreach ($rows as $row) $newRows[] = $row[$valueColumn];
+            foreach ($rows as $row) {
+                $newRows[] = $row[$valueColumn];
+            }
             return $newRows;
         }
         if ($keyColumn) {
-            foreach ($rows as $row) $newRows[$row[$keyColumn]] = $row;
+            foreach ($rows as $row) {
+                $newRows[$row[$keyColumn]] = $row;
+            }
             return $newRows;
         }
     }
@@ -412,7 +467,8 @@ class Arr {
      * @param array $array
      * @return \stdClass
      */
-    public static function toStdClass(array $array) {
+    public static function toStdClass(array $array)
+    {
         return static::recursiveToStdClass($array);
     }
 
@@ -420,7 +476,8 @@ class Arr {
      * @param \stdClass $obj
      * @return array
      */
-    public static function fromStdClass(\stdClass $obj) {
+    public static function fromStdClass(\stdClass $obj)
+    {
         return static::recursiveFromStdClass($obj);
     }
 
@@ -428,10 +485,13 @@ class Arr {
      * @param mixed $val
      * @return object
      */
-    protected static function recursiveToStdClass($val) {
+    protected static function recursiveToStdClass($val)
+    {
         if (is_array($val)) {
-            if (!Arr::isAssoc($val)) return $val;
-            return (object) array_map(array(static::class, 'recursiveToStdClass'), $val);
+            if (!Arr::isAssoc($val)) {
+                return $val;
+            }
+            return (object)array_map(array(static::class, 'recursiveToStdClass'), $val);
         } else {
             return $val;
         }
@@ -441,7 +501,8 @@ class Arr {
      * @param mixed $val
      * @return array
      */
-    protected static function recursiveFromStdClass($val) {
+    protected static function recursiveFromStdClass($val)
+    {
         if (is_object($val)) {
             $val = get_object_vars($val);
         }
@@ -460,7 +521,8 @@ class Arr {
      * @return array
      * @throws \Exception
      */
-    public static function commaListToArray($items, $msg = "Expected comma list or array") {
+    public static function commaListToArray($items, $msg = "Expected comma list or array")
+    {
         if (is_string($items)) {
             $items = array_map('trim', explode(',', $items));
         }
@@ -487,7 +549,8 @@ class Arr {
      * @param mixed $default
      * @return mixed
      */
-    public static function safe($array, $index, $default = NULL) {
+    public static function safe($array, $index, $default = null)
+    {
         if (!is_array($index)) {
             return isset($array[$index]) ? $array[$index] : $default;
         }
@@ -515,7 +578,8 @@ class Arr {
      * @return mixed
      * @throws \Exception
      */
-    public static function safePath($array, $path, $default = NULL, $pathDelimiter = '.') {
+    public static function safePath($array, $path, $default = null, $pathDelimiter = '.')
+    {
         if (!is_string($path)) {
             throw new \Exception("Arr::safePath path must be a string");
         }
@@ -532,7 +596,8 @@ class Arr {
      * @param mixed $index
      * @param null|mixed $value
      */
-    public static function safeAppend(array &$array, $index, $value = NULL) {
+    public static function safeAppend(array &$array, $index, $value = null)
+    {
         if (!is_array($array[$index])) {
             $array[$index] = [];
         }

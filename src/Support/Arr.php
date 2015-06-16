@@ -5,7 +5,7 @@ namespace Peach\Support;
 class Arr {
 
 
-    // BASICS  ------------------------------------------------------------------------------------
+    // MISC  ------------------------------------------------------------------------------------
 
     /**
      * Returns an array with the default values being overwritten by any values in the $overrides array.

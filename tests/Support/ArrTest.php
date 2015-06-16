@@ -314,6 +314,18 @@ class ArrTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($diff['beta'], array(2 => 5, 3 => 6, 4 => 7));
     }
 
+    /** @test */
+    public function itFlattensArrays() {
+        $arr = [1, [2, 3, [4, 5], [6], 7]];
+        $this->assertEquals([1, 2, 3, 4, 5, 6, 7], Arr::flatten($arr));
+    }
+
+    /** @test */
+    public function itFlattensEmptyArrays() {
+        $arr = [];
+        $this->assertEquals([], Arr::flatten($arr));
+    }
+
     /**
      * @param callable $callable
      */

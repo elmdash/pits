@@ -67,29 +67,59 @@ class Path
      */
     public static function make()
     {
-        $args = func_get_args();
-        if (!count($args)) {
+        $args = Arr::flatten(func_get_args());
+        if (empty($args)) {
             return '';
         }
-        $parts = array();
-        foreach ($args as $arg) {
-            if (is_array($arg)) {
-                $parts = array_merge($parts, $arg);
-            } else {
-                $parts[] = $arg;
-            }
+        $len = count($args);
+        if ($len == 1) {
+            return $args[0];
         }
+
         $fileAndExt = '';
-        $ext = array_pop($parts);
+        $ext = array_pop($args);
         if (strpos($ext, '.') !== false) {
             $fileAndExt = $ext;
         }
+
         if (!$fileAndExt) {
-            $file = array_pop($parts);
+            $file = array_pop($args);
             $fileAndExt = $file . '.' . $ext;
         }
-        $parts[] = $fileAndExt;
-        return implode(DIRECTORY_SEPARATOR, $parts);
+
+        $args[] = $fileAndExt;
+        return static::join($args);
+    }
+
+    /**
+     * Same as Path::make but no extension
+     *
+     * @return string
+     */
+    public static function join()
+    {
+        $args = Arr::flatten(func_get_args());
+        if (empty($args)) {
+            return '';
+        }
+        $len = count($args);
+        if ($len == 1) {
+            return $args[0];
+        }
+        $last = $len - 1;
+
+
+        $args[0] = static::rtrim($args[0]);
+        for ($i = 1; $i < $len; ++$i) {
+            if ($i == $last) {
+                $args[$i] = static::ltrim($args[$i]);
+            } else {
+                $args[$i] = static::trim($args[$i]);
+            }
+
+        }
+
+        return implode(DIRECTORY_SEPARATOR, $args);
     }
 
     /**
@@ -101,8 +131,8 @@ class Path
      */
     public static function diff($path1, $path2)
     {
-        $p1 = explode(DIRECTORY_SEPARATOR, Path::ext($path1) ? Path::dir($path1) : $path1);
-        $p2 = explode(DIRECTORY_SEPARATOR, Path::ext($path2) ? Path::dir($path2) : $path2);
+        $p1 = explode(DIRECTORY_SEPARATOR, static::ext($path1) ? static::dir($path1) : $path1);
+        $p2 = explode(DIRECTORY_SEPARATOR, static::ext($path2) ? static::dir($path2) : $path2);
         return array(
           implode(DIRECTORY_SEPARATOR, array_intersect_assoc($p1, $p2)),
           implode(DIRECTORY_SEPARATOR, array_diff_assoc($p1, $p2)),
@@ -116,15 +146,48 @@ class Path
      */
     public static function common($array)
     {
-        $out = Path::dir(array_shift($array));
+        $out = static::dir(array_shift($array));
         foreach ($array as $path) {
-            $diff = Path::diff($out, Path::dir($path));
+            $diff = static::diff($out, static::dir($path));
             $out = $diff[0];
             if (!$out) {
                 return null;
             }
         }
         return $out;
+    }
+
+    /**
+     * Removes any slashes at the beginning or end
+     *
+     * @param string $path
+     * @return string
+     */
+    protected static function trim($path)
+    {
+        return trim($path, DIRECTORY_SEPARATOR);
+    }
+
+    /**
+     * Removes any slashes at the beginning or end
+     *
+     * @param string $path
+     * @return string
+     */
+    protected static function rtrim($path)
+    {
+        return rtrim($path, DIRECTORY_SEPARATOR);
+    }
+
+    /**
+     * Removes any slashes at the beginning or end
+     *
+     * @param string $path
+     * @return string
+     */
+    protected static function ltrim($path)
+    {
+        return ltrim($path, DIRECTORY_SEPARATOR);
     }
 
 }

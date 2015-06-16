@@ -50,9 +50,6 @@ class Arr
      */
     public static function walkKeysRecursive(array &$array, callable $func)
     {
-        if (!is_callable($func)) {
-            return;
-        }
         $out = [];
         foreach ($array as $key => $val) {
             $newKey = $func($key);
@@ -64,6 +61,15 @@ class Arr
         $array = $out;
     }
 
+    /**
+     * @param array $array
+     * @return array
+     */
+    public static function flatten(array $array) {
+        $out = [];
+        array_walk_recursive($array, function($a) use (&$out) { $out[] = $a; });
+        return $out;
+    }
 
 
 
@@ -164,9 +170,6 @@ class Arr
      */
     public static function findWithKey(array $array, callable $where)
     {
-        if (!is_callable($where)) {
-            return false;
-        }
         foreach ($array as $key => $val) {
             if ($where($key)) {
                 return $val;
@@ -491,7 +494,7 @@ class Arr
             if (!Arr::isAssoc($val)) {
                 return $val;
             }
-            return (object)array_map(array(static::class, 'recursiveToStdClass'), $val);
+            return (object) array_map([static::class, 'recursiveToStdClass'], $val);
         } else {
             return $val;
         }
@@ -507,7 +510,7 @@ class Arr
             $val = get_object_vars($val);
         }
         if (is_array($val)) {
-            return array_map(array(static::class, 'recursiveFromStdClass'), $val);
+            return array_map([static::class, 'recursiveFromStdClass'], $val);
         }
         return $val;
     }

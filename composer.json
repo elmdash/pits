@@ -1,0 +1,21 @@
+{
+  "name": "psoots/peach",
+  "description": "Supplemental PHP utilities for random low level things.",
+  "minimum-stability": "dev",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Peter Soots",
+      "email": "psoots@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "5.5.*",
+    "phpunit/phpunit": "4.7.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Peach\\": "src/"
+    }
+  }
+}

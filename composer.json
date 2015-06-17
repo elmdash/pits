@@ -3,6 +3,7 @@
   "description": "Supplemental PHP utilities for random low level things.",
   "minimum-stability": "dev",
   "license": "MIT",
+  "type": "library",
   "authors": [
     {
       "name": "Peter Soots",
@@ -15,7 +16,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Peach\\": "src/"
+      "Peach\\Support\\": "src/Support/"
     }
   }
 }

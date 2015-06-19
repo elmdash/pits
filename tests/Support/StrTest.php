@@ -4,7 +4,8 @@ namespace Peach\Tests\Support;
 
 use Peach\Support\Str;
 
-class StrTest extends \PHPUnit_Framework_TestCase {
+class StrTest extends \PHPUnit_Framework_TestCase
+{
 
 
     /** @test */

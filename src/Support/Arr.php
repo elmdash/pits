@@ -45,6 +45,8 @@ class Arr
     /**
      * Apply a function to all keys of an array.
      *
+     * Because `array_walk_recursive` does not allow altering keys
+     *
      * @param array $array
      * @param callable $func Returns a new key
      */
@@ -125,7 +127,30 @@ class Arr
             return false;
         }
         foreach ($array as $key => $val) {
-            if ($where($key, $val)) {
+            if ($where($val, $key)) {
+                return $val;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Returns the first value where the callable returns false.
+     *
+     * Callable takes $key, $val as args.
+     * Only works if no values are -1.
+     *
+     * @param array $array
+     * @param callable $where
+     * @return int|bool FALSE if $where is not callable, -1 if not found
+     */
+    public static function findNot(array $array, callable $where)
+    {
+        if (!is_callable($where)) {
+            return false;
+        }
+        foreach ($array as $key => $val) {
+            if (!$where($val, $key)) {
                 return $val;
             }
         }

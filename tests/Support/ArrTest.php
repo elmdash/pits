@@ -3,8 +3,10 @@
 namespace Peach\Tests\Support;
 
 use Peach\Support\Arr;
+use Peach\Support\Num;
 
-class ArrTest extends \PHPUnit_Framework_TestCase {
+class ArrTest extends \PHPUnit_Framework_TestCase
+{
 
 
     /** @var array */
@@ -154,29 +156,35 @@ class ArrTest extends \PHPUnit_Framework_TestCase {
     /** @test */
     public function itFindsFirstValue() {
         $arr = array('a' => 3, 'b' => 4, 'c' => 5, 'd' => 6);
-        $func = function ($key, $val) { return $val % 2 == 0; };
+        $func = function ($val) { return $val % 2 == 0; };
         $this->assertEquals(4, Arr::find($arr, $func));
     }
 
     /** @test */
     public function itFailsWhenFindingAndNothingFound() {
         $arr = array('a' => 3, 'b' => 4, 'c' => 5, 'd' => 6);
-        $func = function ($key, $val) { return $val % 7 == 0; };
+        $func = function ($val) { return $val % 7 == 0; };
         $this->assertEquals(-1, Arr::find($arr, $func));
     }
 
     /** @test */
     public function itFindsFirstValueUsingKey() {
         $arr = array('a' => 3, 'b' => 4, 'c' => 5, 'd' => 6);
-        $func = function ($key) { return in_array($key, array('b','d')); };
+        $func = function ($val, $key) { return in_array($key, array('b','d')); };
         $this->assertEquals(4, Arr::find($arr, $func));
     }
 
     /** @test */
     public function itFailsWhenFindingAndNothingFoundUsingKey() {
         $arr = array('a' => 3, 'b' => 4, 'c' => 5, 'd' => 6);
-        $func = function ($key) { return in_array($key, array('e','f')); };
+        $func = function ($val, $key) { return in_array($key, array('e','f')); };
         $this->assertEquals(-1, Arr::find($arr, $func));
+    }
+
+    /** @test */
+    public function itFindsFirstIncorrectValue() {
+        $arr = array('a' => 2, 'b' => 4, 'c' => 5, 'd' => 6);
+        $this->assertEquals(5, Arr::findNot($arr, [Num::class, 'isEven']));
     }
 
     /** @test */

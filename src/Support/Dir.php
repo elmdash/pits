@@ -53,6 +53,11 @@ class Dir {
         return static::prependPath($path, $res);
      }
 
+    public static function dirsExist(array $dirs)
+    {
+        return Arr::findNot($dirs, 'is_dir') !== -1;
+    }
+
     /**
      * Adds the path to all the array values (supposedly strings)
      *

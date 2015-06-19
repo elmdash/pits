@@ -53,6 +53,12 @@ class Dir {
         return static::prependPath($path, $res);
      }
 
+    /**
+     * Quick test to see that all directories exist.
+     *
+     * @param array $dirs
+     * @return bool
+     */
     public static function dirsExist(array $dirs)
     {
         return Arr::findNot($dirs, 'is_dir') !== -1;
@@ -65,7 +71,7 @@ class Dir {
      * @param $arr
      * @return array
      */
-    protected static function prependPath($path, $arr)
+    public static function prependPath($path, $arr)
     {
         if (!is_array($arr)) return $path.DIRECTORY_SEPARATOR.$arr;
         $prepend = function($f) use ($path) { return $path.DIRECTORY_SEPARATOR.$f; };

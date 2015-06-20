@@ -16,7 +16,7 @@ class Dir {
         if (!is_dir($path)) return FALSE;
         $res = array_slice(scandir($path), 2);
         if (!$usePath) return $res;
-        return static::prependPath($path, $res);
+        return static::prependPath($res, $path);
     }
 
     /**
@@ -33,7 +33,7 @@ class Dir {
             return is_dir($path.DIRECTORY_SEPARATOR.$f);
         });
         if (!$usePath) return $res;
-        return static::prependPath($path, $res);
+        return static::prependPath($res, $path);
     }
 
     /**
@@ -50,7 +50,7 @@ class Dir {
             return is_file($path.DIRECTORY_SEPARATOR.$f);
         });
         if (!$usePath) return $res;
-        return static::prependPath($path, $res);
+        return static::prependPath($res, $path);
      }
 
     /**
@@ -61,17 +61,17 @@ class Dir {
      */
     public static function dirsExist(array $dirs)
     {
-        return Arr::findNot($dirs, 'is_dir') !== -1;
+        return Arr::findNot($dirs, 'is_dir', Arr::VAL_ONLY) !== -1;
     }
 
     /**
      * Adds the path to all the array values (supposedly strings)
      *
-     * @param string $path
      * @param $arr
+     * @param string $path
      * @return array
      */
-    public static function prependPath($path, $arr)
+    public static function prependPath($arr, $path)
     {
         if (!is_array($arr)) return $path.DIRECTORY_SEPARATOR.$arr;
         $prepend = function($f) use ($path) { return $path.DIRECTORY_SEPARATOR.$f; };

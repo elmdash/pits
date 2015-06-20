@@ -5,6 +5,9 @@ namespace Peach\Support;
 class Arr
 {
 
+    const KEY_ONLY = 1;
+    const VAL_ONLY = 2;
+    const KEY_VAL  = 4;
 
     // MISC  ------------------------------------------------------------------------------------
 
@@ -114,47 +117,81 @@ class Arr
     /**
      * Returns the first value where the callable returns true.
      *
-     * Callable takes $key, $val as args.
-     * Only works if no values are -1.
+     * Callable takes $val, $key as args unless specified differently with a flag.
      *
      * @param array $array
      * @param callable $where
-     * @return int|bool FALSE if $where is not callable, -1 if not found
+     * @param int $callableArgs Which arguments the callable takes
+     * @param mixed $notFoundValue Which value to return to signify no value was found.
+     * @return mixed
      */
-    public static function find(array $array, callable $where)
+    public static function find(array $array, callable $where, $callableArgs = Arr::KEY_VAL, $notFoundValue = -1)
     {
-        if (!is_callable($where)) {
-            return false;
+        switch ($callableArgs) {
+            case Arr::KEY_ONLY:
+                foreach ($array as $key => $val) {
+                    if ($where($key)) {
+                        return $val;
+                    }
+                }
+                break;
+            case Arr::VAL_ONLY:
+                foreach ($array as $key => $val) {
+                    if ($where($val)) {
+                        return $val;
+                    }
+                }
+                break;
+            case Arr::KEY_VAL:
+                foreach ($array as $key => $val) {
+                    if ($where($val, $key)) {
+                        return $val;
+                    }
+                }
+                break;
         }
-        foreach ($array as $key => $val) {
-            if ($where($val, $key)) {
-                return $val;
-            }
-        }
-        return -1;
+
+        return $notFoundValue;
     }
 
     /**
      * Returns the first value where the callable returns false.
      *
-     * Callable takes $key, $val as args.
-     * Only works if no values are -1.
+     * Callable takes $val, $key as args unless specified differently with a flag.
      *
      * @param array $array
      * @param callable $where
-     * @return int|bool FALSE if $where is not callable, -1 if not found
+     * @param int $callableArgs Which arguments the callable takes
+     * @param mixed $notFoundValue Which value to return to signify no value was found.
+     * @return mixed
      */
-    public static function findNot(array $array, callable $where)
+    public static function findNot(array $array, callable $where, $callableArgs = Arr::KEY_VAL, $notFoundValue = -1)
     {
-        if (!is_callable($where)) {
-            return false;
+        switch ($callableArgs) {
+            case Arr::KEY_ONLY:
+                foreach ($array as $key => $val) {
+                    if (!$where($key)) {
+                        return $val;
+                    }
+                }
+                break;
+            case Arr::VAL_ONLY:
+                foreach ($array as $key => $val) {
+                    if (!$where($val)) {
+                        return $val;
+                    }
+                }
+                break;
+            case Arr::KEY_VAL:
+                foreach ($array as $key => $val) {
+                    if (!$where($val, $key)) {
+                        return $val;
+                    }
+                }
+                break;
         }
-        foreach ($array as $key => $val) {
-            if (!$where($val, $key)) {
-                return $val;
-            }
-        }
-        return -1;
+
+        return $notFoundValue;
     }
 
     /**

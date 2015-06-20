@@ -76,6 +76,21 @@ class Arr
         return $out;
     }
 
+    /**
+     * Apply a method to each object in an array.
+     *
+     * @param array $array
+     * @param string $method
+     * @param array $args
+     * @return array
+     */
+    public static function mapMethod(array $array, $method, $args = [])
+    {
+        return array_map(function($obj) use ($method, $args) {
+            return call_user_func_array([$obj, $method], $args);
+        }, $array);
+    }
+
 
 
     // FINDING ----------------------------------------------------------------------------

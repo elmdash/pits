@@ -1,6 +1,6 @@
 {
-  "name": "psoots/peach",
-  "description": "Supplemental PHP utilities for random low level things.",
+  "name": "peachy-keen/pits",
+  "description": "A framework-less library of useful things.",
   "minimum-stability": "dev",
   "license": "MIT",
   "type": "library",

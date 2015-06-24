@@ -2,3 +2,4 @@
 vendor
 peach.iml
 .php-version
+composer.lock

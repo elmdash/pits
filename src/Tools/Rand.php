@@ -7,7 +7,7 @@ use Peach\Support\Arr;
 class Rand
 {
     protected $probabilities = [
-        'notAlways'  => [24, 25],
+        'almostAlways'  => [24, 25],
         'frequently' => [2, 3],
         'sometimes'  => [1, 4],
         'rarely'     => [1, 10],

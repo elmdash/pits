@@ -1,5 +1,5 @@
 {
-  "name": "peachy-keen/pits",
+  "name": "elmdash/pits",
   "description": "A framework-less library of useful things.",
   "minimum-stability": "dev",
   "license": "MIT",
@@ -7,7 +7,7 @@
   "authors": [
     {
       "name": "Peter Soots",
-      "email": "psoots@gmail.com"
+      "email": "work@petersoots.com"
     }
   ],
   "require": {
